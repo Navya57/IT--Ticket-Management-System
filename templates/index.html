@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Ticket Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>IT Ticket Management System</h1>
+
+    <!-- Dashboard -->
+
+    <div class="card">
+
+        <h3>Total Tickets : {{ total_tickets }}</h3>
+
+        <h3>Open Tickets : {{ open_tickets }}</h3>
+
+        <h3>Resolved Tickets : {{ resolved_tickets }}</h3>
+
+    </div>
+
+    <!-- Login -->
+
+    <div class="card">
+
+        <h2>Login</h2>
+
+        <input type="email" placeholder="Enter Email">
+
+        <input type="password" placeholder="Enter Password">
+
+        <button onclick="loginUser()">
+            Login
+        </button>
+
+    </div>
+
+    <!-- Create Ticket -->
+
+    <form action="/create_ticket" method="POST">
+
+        <input
+            type="text"
+            name="issue_title"
+            placeholder="Issue Title"
+            required>
+
+        <textarea
+            name="description"
+            placeholder="Describe Issue"
+            required></textarea>
+
+        <select name="priority">
+
+            <option value="Low">Low</option>
+
+            <option value="Medium">Medium</option>
+
+            <option value="High">High</option>
+
+        </select>
+        <select name="category">
+
+<option>Hardware</option>
+
+<option>Software</option>
+
+<option>Network</option>
+
+<option>Access Request</option>
+
+</select>
+
+        <button type="submit">
+            Create Ticket
+        </button>
+
+    </form>
+
+    <!-- Ticket Table -->
+
+    <form action="/search" method="GET">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Search by Issue Title">
+
+    <button type="submit">
+        Search
+    </button>
+
+</form>
+        {% for ticket in tickets %}
+
+        <tr>
+
+            <td>{{ ticket[0] }}</td>
+
+            <td>{{ ticket[1] }}</td>
+
+            <td>{{ ticket[3] }}</td>
+
+            <td>{{ ticket[4] }}</td>
+
+            <td>
+
+                {% if ticket[4] != 'Resolved' %}
+
+                <a href="/update_status/{{ ticket[0] }}">
+                    Resolve
+                </a>
+
+                {% else %}
+
+                Resolved
+
+                {% endif %}
+
+            </td>
+
+            <td>
+
+                <a href="/delete_ticket/{{ ticket[0] }}">
+                    Delete
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+</div>
+<div class="dashboard">
+
+    <div class="card-box">
+        <h3>Total Tickets</h3>
+        <h2>{{ total_tickets }}</h2>
+    </div>
+
+    <div class="card-box">
+        <h3>Open Tickets</h3>
+        <h2>{{ open_tickets }}</h2>
+    </div>
+
+    <div class="card-box">
+        <h3>Resolved Tickets</h3>
+        <h2>{{ resolved_tickets }}</h2>
+    </div>
+
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
